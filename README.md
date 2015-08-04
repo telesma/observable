@@ -21,6 +21,9 @@ function callback(value, path) {
 // Listen for changes to 'hello' property
 observe.subscribe('hello', callback);
 
+// Trigger listeners for path
+observe.trigger('hello');
+
 // Update the value of the hello property
 observe.set('hello', 'newValue'); // 'newValue', 'hello' logged to console because of subscriber
 
@@ -51,6 +54,9 @@ function callback(value, path) {
 
 // Listen for changes to 'num' property
 observe.subscribe('hello.nested.fartherNested.num', callback);
+
+// Trigger listeners for path
+observe.trigger('hello.nested.fartherNested.num');
 
 // Update the value of the 'num property
 observe.set('hello.nested.fartherNested.num', 5678); // 5678, 'hello.nested.fartherNested.num' logged to console because of subscriber

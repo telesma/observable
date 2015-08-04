@@ -347,9 +347,19 @@ describe('Observable', function() {
 			observe.set('good.not', {});
 			expect(spy).toHaveBeenCalledWith(undefined, 'good.not.yes.nope');
 		});
+		it("doesn't trigger if value wasn't changed", function() {
+			var observe = new Observable(testObj);
+			var spy = jasmine.createSpy('Callback Spy');
+			observe.subscribe('hello', spy);
+			observe.set('hello', 'bar');
+			observe.set('hello', 'bar');
+			expect(spy).toHaveBeenCalledWith('bar', 'hello');
+			console.log(spy);
+			expect(spy.calls.length).toEqual(1);
+		});
 	});
 	describe('unsubscribe', function() {
-		var testObj
+		var testObj;
 		beforeEach(function() {
 			testObj = {
 				nice: undefined,

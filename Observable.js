@@ -40,8 +40,9 @@
 	 * @param {boolean} [silence] Do not notify subscribers
 	 */
 	Observable.prototype.set = function (keyPath, value, silence) {
-		var i, parts, val;
+		var i, parts, val, changed;
 		if (!keyPath) {
+			changed = true;
 			this.obj = value;
 		} else {
 			parts = keyPath.split('.');
@@ -51,22 +52,31 @@
 					throw new Error('Invalid keyPath: ' + keyPath);
 				}
 				if (i === parts.length - 1) {
+					var oldvalue;
+					try {
+						oldvalue = val[parts[i]];
+					} catch (e) {}
 					val[parts[i]] = value;
+					changed = value !== oldvalue;
 					break;
 				}
 				val = val[parts[i]];
 			}
 		}
 
-		if (!silence) {
-			for (i = 0; i < this._watchers.length; i++) {
-				if (!this._watchers[i].keyPath ||
-					!keyPath ||
-					this._watchers[i].keyPath === keyPath ||
-					this._watchers[i].keyPath.match(new RegExp('^' + keyPath.replace('.', '\\.') + '\\..*?')) ||
-					keyPath.match(new RegExp('^' + this._watchers[i].keyPath.replace('.', '\\.') + '\\..*?'))) {
-					this._watchers[i].callback(this.get(this._watchers[i].keyPath, true), this._watchers[i].keyPath);
-				}
+		if (!silence && changed) {
+			this.trigger(keyPath);
+		}
+	};
+
+	Observable.prototype.trigger = function (keyPath) {
+		for (var i = 0; i < this._watchers.length; i++) {
+			if (!this._watchers[i].keyPath ||
+				!keyPath ||
+				this._watchers[i].keyPath === keyPath ||
+				this._watchers[i].keyPath.match(new RegExp('^' + keyPath.replace('.', '\\.') + '\\..*?')) ||
+				keyPath.match(new RegExp('^' + this._watchers[i].keyPath.replace('.', '\\.') + '\\..*?'))) {
+				this._watchers[i].callback(this.get(this._watchers[i].keyPath, true), this._watchers[i].keyPath);
 			}
 		}
 	};
