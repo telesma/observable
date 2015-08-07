@@ -357,6 +357,24 @@ describe('Observable', function() {
 			console.log(spy);
 			expect(spy.calls.length).toEqual(1);
 		});
+		it("doesn't trigger if value wasn't changed and value is object", function() {
+			testObj = {
+				hello:  {
+					world: 'mine',
+					yes: 123
+				},
+			};
+			var observe = new Observable(testObj);
+
+			var spy = jasmine.createSpy('Callback Spy');
+			observe.subscribe('hello', spy);
+			observe.set('hello', {
+				world: 'mine',
+				yes: 123
+			});
+			console.log(spy);
+			expect(spy).not.toHaveBeenCalled();
+		});
 	});
 	describe('unsubscribe', function() {
 		var testObj;
