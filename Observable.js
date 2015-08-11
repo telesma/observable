@@ -37,9 +37,9 @@
 	 * Set an object value base on the keyPath
 	 * @param {string} keyPath Path to a property i.e. "hello" or "hello.world.mine"
 	 * @param {*} value
-	 * @param {boolean} [silence] Do not notify subscribers
+	 * @param {boolean} [forceTrigger] if "true", always notify subscribers, whether value changed or not
 	 */
-	Observable.prototype.set = function (keyPath, value, silence) {
+	Observable.prototype.set = function (keyPath, value, forceTrigger) {
 		var i, parts, val, changed;
 		if (!keyPath) {
 			changed = true;
@@ -64,7 +64,7 @@
 			}
 		}
 
-		if (!silence && changed) {
+		if (changed || forceTrigger) {
 			this.trigger(keyPath);
 		}
 	};

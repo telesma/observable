@@ -239,12 +239,26 @@ describe('Observable', function() {
 			var val = 555;
 			var observe = new Observable(testObj);
 			expect(function() {
-				observe.set('cool.good.mit.need',val)
+				observe.set('cool.good.mit.need',val);
 			}).toThrow('Invalid keyPath: cool.good.mit.need');
+		});
+		it('notifies whether value changed or not', function() {
+			var testObj = {
+				hello: {
+					world: 1
+				}
+			};
+			var observe = new Observable(testObj);
+			var spy = jasmine.createSpy('Callback Spy');
+			observe.subscribe('hello.world', spy);
+			observe.set('hello.world', 1);
+			expect(spy).not.toHaveBeenCalled();
+			observe.set('hello.world', 1, true);
+			expect(spy).toHaveBeenCalledWith(1, 'hello.world');
 		});
 	});
 	describe('subscribe', function() {
-		var testObj
+		var testObj;
 		beforeEach(function() {
 			testObj = {
 				nice: undefined,

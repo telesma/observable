@@ -25,7 +25,8 @@ observe.subscribe('hello', callback);
 observe.trigger('hello');
 
 // Update the value of the hello property
-observe.set('hello', 'newValue'); // 'newValue', 'hello' logged to console because of subscriber
+observe.set('hello', 'newValue', true); // 'newValue', 'hello' logged to console because of subscriber
+// if 3rd argument is true, observe will always notify about a change, whether value changed or not.
 
 // Stop listening to changes
 observe.unsubscribe('hello', callback);
