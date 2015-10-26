@@ -1,0 +1,21 @@
+{
+  "name": "observable-lite",
+  "description": "Observable object for use with rivetsjs and other libraries",
+  "homepage": "https://github.com/taylorhakes/observable",
+  "version": "0.0.1",
+  "main": "Observable.js",
+  "license": "MIT",
+  "authors": [
+    "Taylor Hakes"
+  ],
+  "keywords": ["Observable", "Rivetsjs", "IE8", "Watchjs"],
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/telesma/observable.git"
+  }
+}
